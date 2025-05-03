@@ -62,9 +62,11 @@
 - testpmd> show port stats 0
 
 **Server : **
+
  <img src="images/memif server.png" alt="Alt text" width="500"/>
 
  **Client : **
+ 
  <img src="images/memif client.png" alt="Alt text" width="500"/>
 
 ---
