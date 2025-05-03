@@ -35,7 +35,9 @@
 - echo 1024 | sudo tee /proc/sys/vm/nr_hugepages
 - cat /proc/meminfo | grep HugePages
 - photo
-
+ 
+---
+ 
 ### helloworld
 - cd dpdk/<build_dir>
 - meson configure -Dexamples=helloworld
