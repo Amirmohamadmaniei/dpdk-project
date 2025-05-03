@@ -83,7 +83,7 @@
 
 ### 🔥 **Flame Graph Analysis**
 
-<img src="images/function tracing 1.png" alt="Alt text" width="450"/>
+<img src="images/function tracing 1.png" alt="Alt text" width="700"/>
 
 The flame graph reveals a structured and repetitive execution pattern in a network-processing application. The top-level function `pkt_burst_io_forward` dominates runtime, indicating it's the primary performance bottleneck. Functions like `common_fwd_stream_receive`, `rte_eth_rx_burst`, and `eth_memif_rx` appear consistently beneath it, reflecting their role in packet handling and forwarding. The repeated call stacks suggest steady, burst-based traffic processing. Deeper, short-lived functions likely handle utilities or parsing. Optimization should focus on `pkt_burst_io_forward` and its direct callees to achieve the most significant performance gains.
 
