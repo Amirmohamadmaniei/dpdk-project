@@ -52,20 +52,20 @@
 
 - ./<build_dir>/app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
 
- ** Client :**
+ **Client :**
  - testpmd> start
 
-** Server :**
+**Server :**
 - testpmd> start tx_first
 
-** both :**
+**both :**
 - testpmd> show port stats 0
 
-** Server : **
+**Server :**
 
  <img src="images/memif server.png" alt="Alt text" width="500"/>
 
- ** Client : **
+ **Client :**
  
  <img src="images/memif client.png" alt="Alt text" width="500"/>
 
