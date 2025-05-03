@@ -83,52 +83,26 @@
 The flame graph reveals a structured and repetitive execution pattern in a network-processing application. The top-level function `pkt_burst_io_forward` dominates runtime, indicating it's the primary performance bottleneck. Functions like `common_fwd_stream_receive`, `rte_eth_rx_burst`, and `eth_memif_rx` appear consistently beneath it, reflecting their role in packet handling and forwarding. The repeated call stacks suggest steady, burst-based traffic processing. Deeper, short-lived functions likely handle utilities or parsing. Optimization should focus on `pkt_burst_io_forward` and its direct callees to achieve the most significant performance gains.
 
 --- 
+### 📊 **Counters Analysis Summary**
 
-### 📊 **Counters Analysis (Thread-Level Performance Metrics)**
+The **Counters** tab in Trace Compass tracks thread-level metrics like `cache_misses`, `CPU usage`, and `instructions` for threads `37211`, `37215`, `37228`, and `37232` over a 68 ms window.
 
+#### **Key Findings**
 
-
-The **Counters** tab in Trace Compass shows real-time thread performance metrics over time, aiding in spotting CPU usage, instruction flow, and cache behavior.
-
-It displays data for threads `37211`, `37215`, `37228`, and `37232`, tracking:
-
--   `thread_cache_misses`
+-   **Thread 37211** shows the highest activity (~2.4 million), indicating it's likely CPU-bound or running critical tasks.
     
--   `thread_cpu_usage`
+-   Other threads (~600k) show much lower usage — likely idle, blocked, or performing background tasks.
     
--   `thread_instructions`
+-   **Spikes align with vertical markers**, suggesting timed or burst operations.
     
 
-**Y-axis**: Metric values  
-**X-axis**: Time from `16:38:51.614` to `16:38:51.682` (68 ms)
+#### **Insights & Recommendations**
 
-#### **Key Observations**
-
--   **Thread 37211** (black) dominates, peaking near 2.4 million — likely high instruction throughput or CPU time.
+-   Thread 37211 is the main load carrier — investigate its role.
     
-    -   Small dips suggest occasional stalls or delays.
-        
--   Other threads (~600k) show lower values:
+-   Other threads may be underutilized — check for blocking or synchronization issues.
     
-    -   Likely doing background tasks or waiting on resources.
-        
--   **Vertical markers** align with spikes, possibly representing bursts or timed tasks.
-    
-
-#### **Interpretation and Implications**
-
--   Thread 37211 is the main consumer, possibly CPU-bound or real-time focused.
-    
--   Imbalance suggests **load redistribution** could help utilize other threads.
-    
-
-#### **Actionable Suggestions**
-
-1.  Examine 37211’s role and load.
-    
-2.  Check if others are blocked.
-    
-3.  Improve parallelism to balance CPU usage.
+-   Consider **load balancing** or parallelization to improve efficiency.
 ---
 
 ### 🔢 **Statistics Overview (Counters)**
@@ -175,17 +149,17 @@ There are also minor slices for “Others,” which may include rare or user-def
 ### 🌳 **Weighted Tree Viewer Analysis**
 
 
-This view displays a _call tree_ of nested functions, showing **total** and **self-time** stats to help identify performance issues.
+This view shows a _call tree_ of nested functions with **total** and **self-time** metrics to help spot performance bottlenecks.
 
 #### Key Columns:
 
 **Function Tree (Leftmost)**  
-Functions appear hierarchically, e.g., `rte_memcpy` was called by `eth_memif_rx`, then by `rte_eth_rx_burst`, etc.
+Functions are shown in hierarchy (e.g., `rte_memcpy` ← `eth_memif_rx` ← `rte_eth_rx_burst`).
 
-tree photo
+**[tree photo]**
 
 **Duration**  
-Cumulative time, including child functions:
+Total time including child calls:
 
 -   `pkt_burst_io_forward` → **1.275 s**
     
@@ -195,97 +169,63 @@ Cumulative time, including child functions:
 **Self time**  
 Time spent in the function itself:
 
--   `rte_trace_point_fp_is_enabled` → **491.605 µs self + total**
+-   `rte_trace_point_fp_is_enabled` → **491.605 µs**
     
--   `memif_get_ring_from_queue` → **26.649 ms self**
+-   `memif_get_ring_from_queue` → **26.649 ms**
     
 
 **Active CPU time**  
-Zero across all — profiling used wall-clock time, not CPU samples.
+All values are zero — wall-clock time used instead of CPU samples.
 
 **Number of calls**  
-Examples:
+Example counts:
 
 -   `rte_eth_rx_burst` → **259.8k**
     
--   `rte_memcpy`, `rte_pktmbuf_reset` → **154.1k** each
+-   `rte_memcpy`, `rte_pktmbuf_reset` → **154.1k**
     
 
 #### Insights:
 
--   `pkt_burst_io_forward` is the main time consumer.
+-   `pkt_burst_io_forward` consumes most time.
     
--   `rte_memcpy` is frequent and time-heavy — possible optimization target.
+-   `rte_memcpy` is frequent and expensive — potential optimization point.
     
--   Functions with high self-time and call counts may be bottlenecks.
+-   High self-time + high call count = likely performance hotspot.
 
 ---
 
-### 📊 Function Duration Distribution: Continuous Interpretation
 
-####  **Left Panel (Table View)**
+### 📊 Function Duration Distribution: Summary
 
-The table on the left lists individual function calls with the following columns:
+#### **Left Panel (Table View)**
 
--   **Start Time / End Time**: Indicates when each function started and ended. The timestamps show nanosecond precision.
+Lists individual function calls with precise **start/end times**, **duration**, and **thread ID** (TID = 372). Useful for drilling into specific execution patterns or anomalies.
+
+#### **Right Panel (Histogram View)**
+
+Shows a **duration vs. frequency** histogram:
+
+-   **Multi-modal peaks** suggest different code paths or workloads (e.g., fast vs. slow paths).
     
--   **Duration**: Computed as the difference between end and start times. This is the function's total runtime.
+-   **Main peak (~5–10 µs)** reflects frequent, fast executions (likely tight loops).
     
--   **TID**: Thread ID of the executing thread, in this case consistently `372` (indicating focus on a specific thread, probably a worker or core thread in DPDK/VPP).
+-   **Secondary peaks (20–120 µs)** may involve memory operations or brief blocking.
     
-
-These raw values support granular inspection and are useful for tracing back specific spikes or anomalies seen in the histogram.
-
-
-####  **Right Panel (Histogram View)**
-
-This histogram shows:
-
--   **X-axis**: Function duration in microseconds (µs)
+-   **Sparse tail beyond 120 µs** suggests rare long-latency calls (e.g., initialization).
     
--   **Y-axis**: Number of times (count) a function ran for that duration
+-   **Logarithmic Y-axis** helps visualize both common and rare durations.
     
 
-####  Interpretation of the Histogram:
+#### **Key Insights**
 
-  **Multi-modal Distribution**:  
-    You see multiple **distinct peaks**, which indicates that there are several groups of function calls with different duration characteristics. This often reflects:
+-   Most calls are short (<20 µs), indicating efficient processing.
     
-    -   Different code paths (e.g., fast path vs slow path)
-        
-    -   Varying packet sizes or processing complexity
-        
-    -   Conditional branching or waiting behavior in user code
-        
- **High Peak at ~5–10 µs**:  
-    The tallest bar (with count > 400,000) is concentrated in the lower microsecond range. These are ultra-fast function calls, likely from tight, efficient loops (possibly packet processing in a no-wait path).
+-   Multiple duration clusters reveal workload variability.
     
-**Secondary Peaks (~20–40 µs, ~60–80 µs, ~120 µs)**:  
-    These peaks represent medium and higher latency operations, which could stem from:
+-   Filtering by thread (TID) supports focused performance tuning.
     
-    -   Buffer allocations
-        
-    -   Memory copy or checksum operations
-        
-    -   Occasional blocking calls or polling delays
-        
- **Sparse Distribution Beyond 120 µs**:  
-    Very few function calls exceed 120 µs, indicating that longer operations are rare — possibly related to exceptional cases like initialization or slow memory access.
-    
-**Logarithmic Y-axis**:  
-    The Y-axis is logarithmic, making it easier to see the tail of rare longer-duration calls without the tall peak hiding them.
-    
-
-
-#### Key Takeaways
-
--   **Most function calls are very short (<20 µs)**, implying high performance and likely inline operations.
-    
--   **Presence of multiple duration clusters** shows heterogeneous workloads or processing paths.
-    
--   **Thread ID filtering** helps isolate one thread’s behavior for performance debugging or optimization.
-    
--   **Useful for tuning**: Any peak at higher durations may indicate optimization candidates.
+-   Longer-duration peaks may highlight optimization opportunities.
 
 ---
 ### 📊 Flame Chart
