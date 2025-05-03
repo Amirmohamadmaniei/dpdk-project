@@ -42,7 +42,8 @@
 - meson configure -Dexamples=helloworld
 - ninja
 - ./<build_dir>/examples/dpdk-helloworld -l 0-3 -n 4
-- photo
+
+<img src="images/hellow world.png" alt="Alt text" width="450"/>
 
 ---
 
@@ -60,8 +61,10 @@
 **both :**
 - testpmd> show port stats 0
 
- photo
- photo
+ <img src="images/memif server.png" alt="Alt text" width="450"/>
+ 
+ <img src="images/memif client.png" alt="Alt text" width="450"/>
+
 
 ---
 
@@ -80,11 +83,14 @@
 
 ### 🔥 **Flame Graph Analysis**
 
+<img src="images/function tracing 1.png" alt="Alt text" width="450"/>
 
 The flame graph reveals a structured and repetitive execution pattern in a network-processing application. The top-level function `pkt_burst_io_forward` dominates runtime, indicating it's the primary performance bottleneck. Functions like `common_fwd_stream_receive`, `rte_eth_rx_burst`, and `eth_memif_rx` appear consistently beneath it, reflecting their role in packet handling and forwarding. The repeated call stacks suggest steady, burst-based traffic processing. Deeper, short-lived functions likely handle utilities or parsing. Optimization should focus on `pkt_burst_io_forward` and its direct callees to achieve the most significant performance gains.
 
 --- 
 ### 📊 **Counters Analysis Summary**
+
+<img src="images/function tracing 2.png" alt="Alt text" width="450"/>
 
 The **Counters** tab in Trace Compass tracks thread-level metrics like `cache_misses`, `CPU usage`, and `instructions` for threads `37211`, `37215`, `37228`, and `37232` over a 68 ms window.
 
@@ -108,6 +114,8 @@ The **Counters** tab in Trace Compass tracks thread-level metrics like `cache_mi
 
 ### 🔢 **Statistics Overview (Counters)**
 
+<img src="images/function tracing 3.png" alt="Alt text" width="450"/>
+
 This view is showing aggregated counter data for the trace source `ust/uid/0/64-bit`.
 
 #### 🔸 Columns:
@@ -122,6 +130,8 @@ This view is showing aggregated counter data for the trace source `ust/uid/0/64-
 ----------
 
 ### 📊 **Pie Charts Analysis**
+
+<img src="images/function tracing 4.png" alt="Alt text" width="450"/>
 
 There are two pie charts:
 
@@ -149,6 +159,7 @@ There are also minor slices for “Others,” which may include rare or user-def
 
 ### 🌳 **Weighted Tree Viewer Analysis**
 
+<img src="images/function tracing 5.png" alt="Alt text" width="450"/>
 
 This view shows a _call tree_ of nested functions with **total** and **self-time** metrics to help spot performance bottlenecks.
 
@@ -157,7 +168,7 @@ This view shows a _call tree_ of nested functions with **total** and **self-time
 **Function Tree (Leftmost)**  
 Functions are shown in hierarchy (e.g., `rte_memcpy` ← `eth_memif_rx` ← `rte_eth_rx_burst`).
 
-**[tree photo]**
+<img src="images/Function tree.png" alt="Alt text" width="450"/>
 
 **Duration**  
 Total time including child calls:
@@ -198,6 +209,8 @@ Example counts:
 
 
 ### 📊 Function Duration Distribution: Summary
+
+<img src="images/function tracing 6.png" alt="Alt text" width="450"/>
 
 #### **Left Panel (Table View)**
 
