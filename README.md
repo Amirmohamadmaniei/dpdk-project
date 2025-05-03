@@ -33,7 +33,7 @@
 - echo 1024 | sudo tee /proc/sys/vm/nr_hugepages
 - cat /proc/meminfo | grep HugePages
 
-<img src="path/to/image.png" alt="Alt text" width="300"/>
+<img src="images/hugepages.png" alt="Alt text" width="300"/>
 
 ---
 
