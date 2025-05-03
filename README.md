@@ -1,5 +1,3 @@
-# dpdk-project
-
 
 # Project Report – [Special Topics in Computer Network 3]
 
@@ -35,9 +33,9 @@
 - echo 1024 | sudo tee /proc/sys/vm/nr_hugepages
 - cat /proc/meminfo | grep HugePages
 - photo
- 
+
 ---
- 
+
 ### helloworld
 - cd dpdk/<build_dir>
 - meson configure -Dexamples=helloworld
@@ -89,9 +87,10 @@ The flame graph reveals a structured and repetitive execution pattern in a netwo
 ### 📊 **Counters Analysis (Thread-Level Performance Metrics)**
 
 
-The **Counters** tab in Trace Compass provides real-time visualization of thread-level performance metrics over a selected time range. This view helps identify CPU usage patterns, instruction throughput, and cache behavior across threads.
 
-The plot shows performance counters for four threads: `37211`, `37215`, `37228`, and `37232`. Each reports three key metrics:
+The **Counters** tab in Trace Compass shows real-time thread performance metrics over time, aiding in spotting CPU usage, instruction flow, and cache behavior.
+
+It displays data for threads `37211`, `37215`, `37228`, and `37232`, tracking:
 
 -   `thread_cache_misses`
     
@@ -100,41 +99,36 @@ The plot shows performance counters for four threads: `37211`, `37215`, `37228`,
 -   `thread_instructions`
     
 
-The **Y-axis** shows the metric values, and the **X-axis** represents time, spanning from `16:38:51.614` to `16:38:51.682` (about 68 ms).
-
+**Y-axis**: Metric values  
+**X-axis**: Time from `16:38:51.614` to `16:38:51.682` (68 ms)
 
 #### **Key Observations**
 
--   **Thread 37211** (black line) dominates the graph’s upper range, likely reflecting instruction count or CPU cycles. It remains near 2.4 million, suggesting high activity and tight-loop execution.
+-   **Thread 37211** (black) dominates, peaking near 2.4 million — likely high instruction throughput or CPU time.
     
-    -   **Brief dips** may indicate minor scheduling delays, cache stalls, or system interference.
+    -   Small dips suggest occasional stalls or delays.
         
--   Other threads (`37215`, `37228`, `37232`) show much lower counter values (~600k), indicating:
+-   Other threads (~600k) show lower values:
     
-    -   They perform background or support tasks.
+    -   Likely doing background tasks or waiting on resources.
         
-    -   They may be blocked or waiting for resources.
-        
--   **Vertical lines** (likely marker events) appear periodically and align with activity spikes, potentially linked to packet bursts or scheduled tasks (consistent with the flame graph pattern).
+-   **Vertical markers** align with spikes, possibly representing bursts or timed tasks.
     
 
 #### **Interpretation and Implications**
 
--   The profile is **thread-skewed**, with thread 37211 consuming most resources.
+-   Thread 37211 is the main consumer, possibly CPU-bound or real-time focused.
     
--   Its high and stable counters suggest it may be CPU-bound or running uninterrupted real-time tasks.
-    
--   Workload imbalance suggests potential for **load balancing** or **multi-threaded optimization**, by offloading work from 37211 to underused threads.
+-   Imbalance suggests **load redistribution** could help utilize other threads.
     
 
 #### **Actionable Suggestions**
 
-1.  **Investigate thread 37211**: Identify its role (e.g., main loop) and whether it's a bottleneck.
+1.  Examine 37211’s role and load.
     
-2.  **Check synchronization**: Ensure other threads aren’t blocked or starved.
+2.  Check if others are blocked.
     
-3.  **Enable parallelism**: Distribute workload more evenly to improve CPU use.
-
+3.  Improve parallelism to balance CPU usage.
 ---
 
 ### 🔢 **Statistics Overview (Counters)**
@@ -180,59 +174,50 @@ There are also minor slices for “Others,” which may include rare or user-def
 
 ### 🌳 **Weighted Tree Viewer Analysis**
 
-This view presents a _call tree_ where each function is nested inside the one that called it. It shows accumulated and self-time statistics over all invocations, helping you identify performance bottlenecks or hotspots.
 
-####  Key Columns:
+This view displays a _call tree_ of nested functions, showing **total** and **self-time** stats to help identify performance issues.
 
- **Function Tree (Leftmost)**  
-    Functions are displayed in a hierarchical structure. For example:
+#### Key Columns:
+
+**Function Tree (Leftmost)**  
+Functions appear hierarchically, e.g., `rte_memcpy` was called by `eth_memif_rx`, then by `rte_eth_rx_burst`, etc.
+
+tree photo
+
+**Duration**  
+Cumulative time, including child functions:
+
+-   `pkt_burst_io_forward` → **1.275 s**
     
-photo (tree)
+-   `common_fwd_stream_receive` → **927.75 ms**
     
-    This shows that `rte_memcpy` was called by `eth_memif_rx`, which was called by `rte_eth_rx_burst`, and so on — reflecting real call stack depth.
+
+**Self time**  
+Time spent in the function itself:
+
+-   `rte_trace_point_fp_is_enabled` → **491.605 µs self + total**
     
- **Duration**  
-    Total cumulative time spent in a function including time spent in its children (nested calls).
+-   `memif_get_ring_from_queue` → **26.649 ms self**
     
-    -   `pkt_burst_io_forward` → **1.275 s**
-        
-    -   `common_fwd_stream_receive` → **927.75 ms**
-        
-    -   `rte_eth_rx_burst` → **874.06 ms**
-        
+
+**Active CPU time**  
+Zero across all — profiling used wall-clock time, not CPU samples.
+
+**Number of calls**  
+Examples:
+
+-   `rte_eth_rx_burst` → **259.8k**
     
-    This indicates that `pkt_burst_io_forward` is a high-level, long-running function.
+-   `rte_memcpy`, `rte_pktmbuf_reset` → **154.1k** each
     
-  **Self time**  
-    Time spent only in that function, excluding children.  
-    This is useful to identify _computational hotspots_. For example:
-    
-    -   `rte_trace_point_fp_is_enabled` → **491.605 µs self time**, **491.605 µs total duration**
-        
-    -   `memif_get_ring_from_queue` → **26.649 ms self time**, meaning this function did actual computation without deeper calls.
-        
- **Active CPU time**  
-    Zero for all entries in this view, suggesting user-space profiling was focused on wall-clock time (likely due to lack of CPU-level sampling or specific tracepoint configuration).
-    
- **Number of calls**  
-    Total invocations across the trace. For instance:
-    
-    -   `rte_eth_rx_burst` → **259.8k**
-        
-    -   `rte_memcpy` → **154.1k**
-        
-    -   `rte_pktmbuf_reset` → **154.1k**
-        
 
 #### Insights:
 
--   The most expensive function by duration is `pkt_burst_io_forward`, which makes sense in a DPDK-style packet forwarding pipeline.
+-   `pkt_burst_io_forward` is the main time consumer.
     
--   The function `rte_memcpy` appears frequently and with high cumulative duration, suggesting it's a potential optimization target.
+-   `rte_memcpy` is frequent and time-heavy — possible optimization target.
     
--   Low-level tracing functions (like `rte_trace_feature_is_enabled`) appear many times but with negligible time.
-    
--   Functions with high **self time** and high **call count** are likely worth reviewing for performance impact.
+-   Functions with high self-time and call counts may be bottlenecks.
 
 ---
 
@@ -358,3 +343,6 @@ VM-based Ubuntu showed only ~200 LTTng events → unusable trace data.
 
 **Solution:**  
 Switched to dual-boot native Ubuntu → full, accurate tracing with millions of events.
+
+
+
