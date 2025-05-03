@@ -32,7 +32,7 @@
 ### HugePages
 - echo 1024 | sudo tee /proc/sys/vm/nr_hugepages
 - cat /proc/meminfo | grep HugePages
-- photo
+![Alt text](images/hugepages.png)
 
 ---
 
