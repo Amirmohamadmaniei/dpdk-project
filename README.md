@@ -33,7 +33,7 @@
 - echo 1024 | sudo tee /proc/sys/vm/nr_hugepages
 - cat /proc/meminfo | grep HugePages
 
-<img src="images/hugepages.png" alt="Alt text" width="450"/>
+<img src="images/hugepages.png" alt="Alt text" width="425"/>
 
 ---
 
@@ -43,7 +43,7 @@
 - ninja
 - ./<build_dir>/examples/dpdk-helloworld -l 0-3 -n 4
 
-<img src="images/hellow world.png" alt="Alt text" width="450"/>
+<img src="images/hellow world.png" alt="Alt text" width="475"/>
 
 ---
 
