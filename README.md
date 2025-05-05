@@ -1,4 +1,5 @@
 
+
 # Project Report – [Special Topics in Computer Network 3]
 
 ## Team Members
@@ -30,36 +31,48 @@
 ---
 
 ### HugePages
-- echo 1024 | sudo tee /proc/sys/vm/nr_hugepages
-- cat /proc/meminfo | grep HugePages
+```
+echo 1024 | sudo tee /proc/sys/vm/nr_hugepages
+cat /proc/meminfo | grep HugePages 
+```
 
 <img src="images/hugepages.png" alt="Alt text" width="425"/>
 
 ---
 
 ### helloworld
-- cd dpdk/<build_dir>
-- meson configure -Dexamples=helloworld
-- ninja
-- ./<build_dir>/examples/dpdk-helloworld -l 0-3 -n 4
+```
+cd dpdk/<build_dir>
+meson configure -Dexamples=helloworld
+ninja
+./<build_dir>/examples/dpdk-helloworld -l 0-3 -n 4
+```
 
 <img src="images/hellow world.png" alt="Alt text" width="475"/>
 
 ---
 
 ### memif
-- ./<build_dir>/app/dpdk-testpmd -l 0-1 --proc-type=primary --file-prefix=pmd1 --vdev=net_memif,role=server -- -i
-
-- ./<build_dir>/app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
+```
+./<build_dir>/app/dpdk-testpmd -l 0-1 --proc-type=primary --file-prefix=pmd1 --
+vdev=net_memif,role=server -- -i
+```
+```
+./<build_dir>/app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
+```
 
  **Client :**
- - testpmd> start
-
+ ```
+testpmd> start
+```
 **Server :**
-- testpmd> start tx_first
-
+```
+testpmd> start tx_first
+```
 **both :**
-- testpmd> show port stats 0
+```
+testpmd> show port stats 0
+```
 
 **Server :**
 
@@ -72,14 +85,22 @@
 ---
 
 ### lttng function tracing
-- lttng create session
-- lttng enable-event --userspace --all
-- lttng add-context --userspace --type=vpid --type=vtid --type=procname  
-- lttng start
-* sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk-testpmd -l 0-1 --proc-type=primary --file-prefix=pmd1 --vdev=net_memif,role=server -- -i
-- sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
-* lttng stop
-* lttng destroy
+```
+lttng create session
+lttng enable-event --userspace --all
+lttng add-context --userspace --type=vpid --type=vtid --type=procname  
+lttng start
+```
+```
+sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk-testpmd -l 0-1 --proc-type=primary --file-prefix=pmd1 --vdev=net_memif,role=server -- -i
+```
+```
+sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
+```
+```
+lttng stop
+lttng destroy
+```
 
 ---
 ## Analysis
