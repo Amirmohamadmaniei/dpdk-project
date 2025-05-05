@@ -20,13 +20,15 @@
 
 ---
 ### Intallation of DPDK
-- sudo apt update
-- sudo apt install -y meson ninja-build python3-pyelftools build-essential
-- git clone https://github.com/DPDK/dpdk.git
-- cd dpdk
-- meson setup build
-- cd build
-- ninja
+```
+sudo apt update
+sudo apt install -y meson ninja-build python3-pyelftools build-essential
+git clone https://github.com/DPDK/dpdk.git
+cd dpdk
+meson setup build
+cd build
+ninja
+```
 
 ---
 
