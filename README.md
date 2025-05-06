@@ -118,6 +118,8 @@ The flame graph reveals a structured and repetitive execution pattern in a netwo
 
 <img src="images/function tracing 2.png" alt="Alt text" width="700"/>
 
+<img src="images/peak func.png" alt="Alt text" width="700"/>
+
 The **Counters** tab in Trace Compass tracks thread-level metrics like `cache_misses`, `CPU usage`, and `instructions` for threads `37211`, `37215`, `37228`, and `37232` over a 68 ms window.
 
 #### **Key Findings**
