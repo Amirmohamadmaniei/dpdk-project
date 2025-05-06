@@ -166,9 +166,9 @@ There are two pie charts:
 2.  **Events in selection**: Event distribution within the currently selected time interval.
     
 
-#### 🟩 Green: `lttng_ust_cyg_profile:func_exit`
+`lttng_ust_cyg_profile:func_exit`
 
-#### 🟨 Olive: `lttng_ust_cyg_profile:func_entry`
+`lttng_ust_cyg_profile:func_entry`
 
 These two events are standard function tracing probes inserted by LTTng-UST using `cyg-profile`:
 
