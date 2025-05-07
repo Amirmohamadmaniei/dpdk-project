@@ -93,7 +93,6 @@ lttng enable-event --userspace --all
 lttng add-context --userspace --type=vpid --type=vtid --type=procname  
 lttng start
 ```
-</br>
 
 **in Server Terminal :**
 ```
@@ -105,6 +104,7 @@ sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk
 sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
 ```
 
+</br>
 
 **Client :**
  ```
