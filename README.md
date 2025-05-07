@@ -65,11 +65,11 @@ vdev=net_memif,role=server -- -i
 
 **Client :**
  ```
-testpmd> start
+testpmd> start tx_first
 ```
 **Server :**
 ```
-testpmd> start tx_first
+testpmd> start
 ```
 **both :**
 ```
@@ -118,11 +118,11 @@ sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk
 
 **Client :**
  ```
-testpmd> start
+testpmd> start tx_first
 ```
 **Server :**
 ```
-testpmd> start tx_first
+testpmd> start
 ```
 **both :**
 ```
