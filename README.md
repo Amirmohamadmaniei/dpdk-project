@@ -88,6 +88,9 @@ testpmd> show port stats 0
 
 ### lttng function tracing
 
+To enable tracing with LTTng, specific compiler flags -finstrument-functions must be set in the default_cflags for both the driver and library build configurations.
+
+
 <img src="images/driver_cflags.png" alt="Alt text" width="500"/>
 <img src="images/lib_cflag.png" alt="Alt text" width="500"/>
 
