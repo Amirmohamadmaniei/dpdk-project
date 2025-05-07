@@ -63,7 +63,7 @@ vdev=net_memif,role=server -- -i
 ./<build_dir>/app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
 ```
 
- **Client :**
+**Client :**
  ```
 testpmd> start
 ```
@@ -93,12 +93,31 @@ lttng enable-event --userspace --all
 lttng add-context --userspace --type=vpid --type=vtid --type=procname  
 lttng start
 ```
+
+**in Server Terminal :**
 ```
 sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk-testpmd -l 0-1 --proc-type=primary --file-prefix=pmd1 --vdev=net_memif,role=server -- -i
 ```
+
+**in Client Terminal :**
 ```
 sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
 ```
+
+
+**Client :**
+ ```
+testpmd> start
+```
+**Server :**
+```
+testpmd> start tx_first
+```
+**both :**
+```
+testpmd> show port stats 0
+```
+
 ```
 lttng stop
 lttng destroy
