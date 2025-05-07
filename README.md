@@ -93,6 +93,7 @@ testpmd> show port stats 0
 
 </br>
 then : 
+
 ```
 lttng create session
 lttng enable-event --userspace --all
