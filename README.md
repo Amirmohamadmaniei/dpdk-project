@@ -88,10 +88,11 @@ testpmd> show port stats 0
 
 ### lttng function tracing
 
-<img src="images/driver_cflag.png" alt="Alt text" width="500"/>
+<img src="images/driver_cflags.png" alt="Alt text" width="500"/>
 <img src="images/lib_cflag.png" alt="Alt text" width="500"/>
 
-
+</br>
+then : 
 ```
 lttng create session
 lttng enable-event --userspace --all
