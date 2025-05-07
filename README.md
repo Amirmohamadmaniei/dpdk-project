@@ -93,6 +93,7 @@ lttng enable-event --userspace --all
 lttng add-context --userspace --type=vpid --type=vtid --type=procname  
 lttng start
 ```
+</br?
 
 **in Server Terminal :**
 ```
