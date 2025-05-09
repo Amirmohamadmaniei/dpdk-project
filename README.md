@@ -27,7 +27,7 @@
   &nbsp;&nbsp;&nbsp;&nbsp;- **Meson** ≥ (version 1.8.0 or higher)   
   &nbsp;&nbsp;&nbsp;&nbsp;- **Ninja** ≥ (version 1.10.0 or higher)
 - **Trace Compass** (for analyzing LTTng traces)
-- **LTTng** ≥ (version 2.13 or higher recommended)
+- **LTTng** (version 2.13 or higher recommended)
 - **ftrace** (built-in kernel tracer)
 - **perf** (from `linux-tools`, version matching kernel)
 - **Dependencies**: `libnuma-dev`, `libpcap-dev`, `python3-pyelftools`, `ninja-build`, `python3-pip`
