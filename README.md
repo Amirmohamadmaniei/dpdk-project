@@ -24,7 +24,7 @@
 - 👤 AliReza Biria
 
 ---
-
+ 
 ## Tools & Technologies
 
 - **Operating System**: Ubuntu 20.04 LTS (or compatible)
@@ -45,19 +45,34 @@
 
 ---
 
-
 ## Installation of DPDK
 
-```bash
-sudo apt update
-sudo apt install -y meson ninja-build python3-pyelftools build-essential
-git clone https://github.com/DPDK/dpdk.git
-cd dpdk
-meson setup build
-cd build
-ninja
-```
+1. **Update repositories and install dependencies:**
+
+    ```bash
+    sudo apt update
+    sudo apt install -y meson ninja-build python3-pyelftools build-essential
+    ```
+
+2. **Clone the DPDK repository:**
+
+    ```bash
+    git clone https://github.com/DPDK/dpdk.git
+    ```
+
+3. **Build and install DPDK:**
+
+    ```bash
+    cd dpdk
+    meson setup build
+    cd build
+    ninja
+    sudo ninja install
+    sudo ldconfig
+    ```
   
+
+
 ---
   
 
@@ -93,7 +108,7 @@ sudo ./build/examples/dpdk-helloworld
   
 ---
 
-### memif
+## memif
 
 ```
 ./<build_dir>/app/dpdk-testpmd -l 0-1 --proc-type=primary --file-prefix=pmd1 --
@@ -144,7 +159,7 @@ testpmd> show port stats 0
 
   
 
-### lttng function tracing
+## lttng function tracing
 
   
 
