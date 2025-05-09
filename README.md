@@ -39,21 +39,13 @@
 ### Intallation of DPDK
 
 ```
-
 sudo apt update
-
 sudo apt install -y meson ninja-build python3-pyelftools build-essential
-
 git clone https://github.com/DPDK/dpdk.git
-
 cd dpdk
-
 meson setup build
-
 cd build
-
 ninja
-
 ```
 
   
@@ -65,11 +57,8 @@ ninja
 ### HugePages
 
 ```
-
 echo 1024 | sudo tee /proc/sys/vm/nr_hugepages
-
 cat /proc/meminfo | grep HugePages
-
 ```
 
   
@@ -85,15 +74,10 @@ cat /proc/meminfo | grep HugePages
 ### helloworld
 
 ```
-
 cd dpdk/<build_dir>
-
 meson configure -Dexamples=helloworld
-
 ninja
-
 ./<build_dir>/examples/dpdk-helloworld -l 0-3 -n 4
-
 ```
 
   
@@ -109,17 +93,12 @@ ninja
 ### memif
 
 ```
-
 ./<build_dir>/app/dpdk-testpmd -l 0-1 --proc-type=primary --file-prefix=pmd1 --
-
 vdev=net_memif,role=server -- -i
-
 ```
 
 ```
-
 ./<build_dir>/app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
-
 ```
 
   
@@ -127,25 +106,19 @@ vdev=net_memif,role=server -- -i
 **Client :**
 
 ```
-
 testpmd> start tx_first
-
 ```
 
 **Server :**
 
 ```
-
 testpmd> start
-
 ```
 
 **both :**
 
 ```
-
 testpmd> show port stats 0
-
 ```
 
   
@@ -186,19 +159,13 @@ To enable tracing with LTTng, specific compiler flags -finstrument-functions mus
 </br>
 
 then :
-
   
 
 ```
-
 lttng create session
-
 lttng enable-event --userspace --all
-
 lttng add-context --userspace --type=vpid --type=vtid --type=procname
-
 lttng start
-
 ```
 
   
@@ -206,19 +173,15 @@ lttng start
 **in Server Terminal :**
 
 ```
-
 sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk-testpmd -l 0-1 --proc-type=primary --file-prefix=pmd1 --vdev=net_memif,role=server -- -i
-
 ```
 
   
 
 **in Client Terminal :**
 
-```
-
+``
 sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk-testpmd -l 2-3 --proc-type=primary --file-prefix=pmd2 --vdev=net_memif -- -i
-
 ```
 
   
@@ -230,25 +193,19 @@ sudo LD_PRELOAD=/usr/lib/x86_64-linux-gnu/liblttng-ust-cyg-profile.so ./app/dpdk
 **Client :**
 
 ```
-
 testpmd> start tx_first
-
 ```
 
 **Server :**
 
 ```
-
 testpmd> start
-
 ```
 
 **both :**
 
 ```
-
 testpmd> show port stats 0
-
 ```
 
 <img  src="images/testpmd show port.png"  alt="Alt text"  width="500"/>
@@ -256,11 +213,8 @@ testpmd> show port stats 0
   
 
 ```
-
 lttng stop
-
 lttng destroy
-
 ```
 
   
