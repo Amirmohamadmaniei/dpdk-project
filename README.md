@@ -1,9 +1,19 @@
+# DPDK Project Report
+**Course**: Special Topics in Computer Networks 3
 
-  
-  
+---
 
-# Project Report – [Special Topics in Computer Network 3]
+## Table of Contents
 
+- [Project Overview](#project-overview)
+- [Team Members](#team-members)
+- [Tools & Technologies](#tools--technologies)
+- [Installation of DPDK](#installation-of-dpdk)
+- [Configuring HugePages](#configuring-hugepages)
+- [Running the Hello World Example](#running-the-hello-world-example)
+- [Implementation Details](#implementation-details)
+- [Results & Analysis](#results--analysis)
+- [Conclusion](#conclusion)
   
 
 ## Team Members
@@ -12,33 +22,32 @@
 - 👤 Shayan Moradi
 - 👤 AliReza Biria
 
-  
-
 ---
-
-  
 
 ## Tools & Technologies
 
-- **Ubuntu 20.04 LTS** (or compatible Linux distribution)
-- **DPDK** (with VPP integration)  
-  &nbsp;&nbsp;&nbsp;&nbsp;- **Meson** (version 1.8.0 or higher)   
-  &nbsp;&nbsp;&nbsp;&nbsp;- **Ninja** (version 1.10.0 or higher)
-- **Trace Compass** (for analyzing LTTng traces)
-- **LTTng** (version 2.13 or higher recommended)
-- **ftrace** (built-in kernel tracer)
-- **perf** (from `linux-tools`, version matching kernel)
-- **Dependencies**: `libnuma-dev`, `libpcap-dev`, `python3-pyelftools`, `ninja-build`, `python3-pip`
-
-
-  
-  
+- **Operating System**: Ubuntu 20.04 LTS (or compatible)
+- **DPDK**: Integrated with VPP
+  - **Meson**: ≥ 1.8.0
+  - **Ninja**: ≥ 1.10.0
+- **Tracing Tools**:
+  - Trace Compass (for LTTng traces)
+  - LTTng (≥ 2.13 recommended)
+  - ftrace (built-in kernel tracer)
+  - perf (from `linux-tools`, version matching kernel)
+- **Dependencies**:
+  - `libnuma-dev`
+  - `libpcap-dev`
+  - `python3-pyelftools`
+  - `ninja-build`
+  - `python3-pip`
 
 ---
 
-### Intallation of DPDK
 
-```
+## Installation of DPDK
+
+```bash
 sudo apt update
 sudo apt install -y meson ninja-build python3-pyelftools build-essential
 git clone https://github.com/DPDK/dpdk.git
@@ -47,48 +56,41 @@ meson setup build
 cd build
 ninja
 ```
-
   
-
 ---
-
   
 
-### HugePages
 
-```
+## Configuring HugePages
+
+Allocate 1024 hugepages for DPDK:
+
+```bash
 echo 1024 | sudo tee /proc/sys/vm/nr_hugepages
 cat /proc/meminfo | grep HugePages
 ```
 
-  
-
 <img  src="images/hugepages.png"  alt="Alt text"  width="425"/>
 
-  
-
 ---
 
   
 
-### helloworld
 
-```
-cd dpdk/<build_dir>
+## Running the Hello World Example
+
+Build and run the `helloworld` example provided by DPDK:
+
+```bash
+cd dpdk
 meson configure -Dexamples=helloworld
-ninja
-./<build_dir>/examples/dpdk-helloworld -l 0-3 -n 4
+ninja -C build
+sudo ./build/examples/dpdk-helloworld
 ```
-
   
-
 <img  src="images/hellow world.png"  alt="Alt text"  width="475"/>
-
   
-
 ---
-
-  
 
 ### memif
 
