@@ -24,8 +24,8 @@
 
 - **Ubuntu 20.04 LTS** (or compatible Linux distribution)
 - **DPDK** (with VPP integration)  
-  &nbsp;&nbsp;&nbsp;&nbsp;- **Meson** ≥ (version 1.8.0 or higher)   
-  &nbsp;&nbsp;&nbsp;&nbsp;- **Ninja** ≥ (version 1.10.0 or higher)
+  &nbsp;&nbsp;&nbsp;&nbsp;- **Meson** (version 1.8.0 or higher)   
+  &nbsp;&nbsp;&nbsp;&nbsp;- **Ninja** (version 1.10.0 or higher)
 - **Trace Compass** (for analyzing LTTng traces)
 - **LTTng** (version 2.13 or higher recommended)
 - **ftrace** (built-in kernel tracer)
