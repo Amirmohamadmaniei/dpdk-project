@@ -110,6 +110,9 @@ sudo ./build/examples/dpdk-helloworld
 
 ## memif
 
+**memif** is a fast, shared-memory interface used for high-speed packet exchange. In this project, we used memif to connect our DPDK-based application to a virtual switch.
+
+
 ```
 ./<build_dir>/app/dpdk-testpmd -l 0-1 --proc-type=primary --file-prefix=pmd1 --
 vdev=net_memif,role=server -- -i
