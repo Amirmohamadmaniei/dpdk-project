@@ -11,9 +11,9 @@
 - [Installation of DPDK](#installation-of-dpdk)
 - [Configuring HugePages](#configuring-hugepages)
 - [Running the Hello World Example](#running-the-hello-world-example)
-- [Implementation Details](#implementation-details)
-- [Results & Analysis](#results--analysis)
-- [Conclusion](#conclusion)
+- [memif](#memif)
+- [lttng function tracing](#lttng-function-tracing)
+- [Analysis](#analysis)
   
 ---
 
@@ -162,7 +162,7 @@ testpmd> show port stats 0
 
   
 
-## lttng function tracing
+## Lttng Function Tracing
 
   
 
